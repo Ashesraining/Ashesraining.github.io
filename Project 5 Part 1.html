@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+  <title>Space Simulator</title>
+  <style>
+    body {
+      text-align: center;
+      background: url("https://wallpapers.com/images/featured/space-sjryfre8k8f6i3ge.jpg");
+      background-size: cover;
+      background-position: center;
+      text-shadow: 0 0 4px #ba1e68, 0 0 0px black; 
+      color: lightgrey;
+      font-family: 	Copperplate;
+    }
+    p {
+      font-size: 42px;
+    }
+    input {
+      border: 0;
+      padding: 12;
+      font-size: 22px;
+    }
+    input[type="submit"] {
+      background: blue;
+      color: darkgrey;
+			margin: 40px 0px 0px 0px;
+			
+    }
+    img {
+      border-radius: 70px;
+      }
+  </style>
+</head>
+<body>
+  <img src="https://spaceplace.nasa.gov/resources/art-challenge/2023/October/space-weather-report_jose-12.jpg">
+  <p>Welcome to the Galaxy Gallery!</p>
+  <p>Sign up here:
+  <input id="Name" input size="33px" placeholder="Your name">
+  <input id="Email" input size="20px" type="email" placeholder="Your email">
+  <input id="submit" input size="33px" type="submit">
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+	import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUoMbM-f5RzBP2Cv7PPcqltEjsrphprQM",
+    authDomain: "jonathanr-fadc9.firebaseapp.com",
+    databaseURL: "https://jonathanr-fadc9-default-rtdb.firebaseio.com",
+    projectId: "jonathanr-fadc9",
+    storageBucket: "jonathanr-fadc9.appspot.com",
+    messagingSenderId: "65239703226",
+    appId: "1:65239703226:web:dcd9b489f08829dd302c83"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+	const db = getDatabase(app);
+
+	const Name = document.querySelector("#Name") 
+	const Email = document.querySelector("#Email")
+	document.querySelector('#submit').addEventListener('click', Submit)
+	
+	function Submit() {
+	  const timestamp = buildTimestamp()
+	  
+	  set(ref(db, timestamp), {
+		  Name: Name.value,
+	    email: Email.value,
+	  });
+
+	  Name.value = ""
+	  Email.value = ""
+	}
+	
+	function buildTimestamp() {
+		  const now = new Date();
+		  let timestamp = now.getFullYear().toString() + "/";
+		  //const month = now.toLocaleString('default', { month: 'long' });
+
+		  let month = now.getMonth()+1   //add 1 because Javascript uses 0 for January
+		  month = month.toString()
+		  month = addLeadingZero(month)
+		  timestamp += month + "/"; 
+
+		  let date = now.getDate().toString()
+		  date = addLeadingZero(date)
+		  timestamp += date + "/";
+
+		  let hours = now.getHours().toString()
+		  hours = addLeadingZero(hours)
+		  timestamp += hours + ":";
+
+		  let minutes = now.getMinutes().toString()
+		  minutes = addLeadingZero(minutes)
+		  timestamp += minutes + ":";
+
+		  let seconds = now.getSeconds().toString()
+		  seconds = addLeadingZero(seconds)
+		  timestamp += seconds;
+  
+		  return timestamp
+		}
+	
+		function addLeadingZero(units) {
+			if (units.length < 2) {
+				units = "0" + units
+			}
+			return units
+		}
+	
+
+	</script>
+</body>
